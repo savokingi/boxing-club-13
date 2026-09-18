@@ -108,4 +108,17 @@
     if (!form.reportValidity()) return;
     showStep(4);
   });
+
+  const mapTabs = document.querySelectorAll('.map-tab');
+  const mapContainers = document.querySelectorAll('.map-container');
+  mapTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      mapTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.target;
+      mapContainers.forEach(container => {
+        container.style.display = container.id === `map-${target}` ? 'block' : 'none';
+      });
+    });
+  });
 })();

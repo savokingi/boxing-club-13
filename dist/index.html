@@ -150,7 +150,18 @@
 
     <section id="contacts" class="contact-layout" aria-labelledby="contacts-title">
       <div class="contact-copy"><div><p class="kicker">Контакты</p><h2 id="contacts-title">Ваш первый раунд начинается здесь</h2></div><div class="contact-data"><div><span>Адреса</span><strong>ул. Еляна, 68<br>пр. Будённовский, 80</strong></div><div><span>Телефон</span><a href="tel:+79896301313"><strong>+7 989 630-13-13</strong></a></div><div><span>Связь</span><a href="https://wa.me/79896301313" target="_blank" rel="noopener"><strong>WhatsApp</strong></a></div><div><span>Соцсети</span><div><a href="https://vk.ru/club241344464" target="_blank" rel="noopener"><strong>VK</strong></a> · <a href="https://t.me/Boxing_Club13" target="_blank" rel="noopener"><strong>Telegram</strong></a> · <a href="https://youtube.com/channel/UCLjxhNYik5Tg19xmQkG5iww?si=qwMjuH5Svb6TXXBG" target="_blank" rel="noopener"><strong>YouTube</strong></a> · <a href="https://www.instagram.com/coach_roman_rostov013?utm_source=qr" target="_blank" rel="noopener"><strong>Instagram</strong></a></div></div></div></div>
-      <div class="contact-map" aria-label="Схема расположения клуба"><div class="map-grid"></div><div class="map-road">ЕЛЯНА 68 · БУДЁННОВСКИЙ 80</div><div class="map-marker">13</div><div class="map-card"><div><strong>Боксерский клуб 13</strong><span>ул. Еляна, 68 · пр. Будённовский, 80</span></div><a class="button button-primary button-small" href="https://yandex.ru/maps/org/114926298963?si=3v7g2arn599uvgf9yhuqatu998" target="_blank" rel="noopener">Маршрут ↗</a></div></div>
+      <div class="contact-map" aria-label="Схема расположения клуба">
+        <div class="map-tabs">
+          <button class="map-tab active" data-target="elyana" type="button">ул. Еляна, 68</button>
+          <button class="map-tab" data-target="budennovsky" type="button">пр. Будённовский, 80</button>
+        </div>
+        <div class="map-container" id="map-elyana">
+          <iframe src="https://yandex.ru/map-widget/v1/org/119336502295" width="100%" height="100%" style="display:block;border:0;" allowfullscreen="true" loading="lazy"></iframe>
+        </div>
+        <div class="map-container" id="map-budennovsky" style="display:none;">
+          <iframe src="https://yandex.ru/map-widget/v1/org/114926298963" width="100%" height="100%" style="display:block;border:0;" allowfullscreen="true" loading="lazy"></iframe>
+        </div>
+      </div>
     </section>
 
     <section class="section final-cta"><div class="container reveal"><h2>Первый шаг — <span>прийти в зал</span></h2><button class="button button-primary button-arrow" type="button" data-book>Записаться на пробную</button></div></section>
