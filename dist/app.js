@@ -27,6 +27,7 @@
     coachQuote: '«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».',
     coachPhoto: 'https://images.pexels.com/photos/4574138/pexels-photo-4574138.jpeg?auto=compress&cs=tinysrgb&w=1600',
     coachPhotoAlt: 'Спортсмен работает на лапах с тренером в боксерском зале',
+    coachGallery: [],
     coachVideos: [],
     phone: '+7(986)023-13-13',
     phoneHref: '+79860231313',
@@ -95,6 +96,7 @@
       coachPhoto.alt = config.coachPhotoAlt || defaultConfig.coachPhotoAlt;
     }
     renderCoachVideos(config.coachVideos);
+    renderCoachGallery(config.coachGallery, config.coachPhoto, config.coachPhotoAlt);
     if (contactHeading) contactHeading.textContent = config.contactHeading || defaultConfig.contactHeading;
     if (addressLine) addressLine.innerHTML = config.addressLine || defaultConfig.addressLine;
     if (phoneText) phoneText.textContent = config.phone || defaultConfig.phone;
@@ -197,6 +199,20 @@
       const meta = document.createElement('span'); meta.textContent = video.meta || 'Смотреть видео ↗';
       const play = document.createElement('i'); play.className = 'coach-video-play'; play.setAttribute('aria-hidden', 'true'); play.textContent = '↗';
       body.append(number, title, meta, play); card.append(body); grid.append(card);
+    });
+  }
+
+  function renderCoachGallery(gallery, mainPhoto, altText) {
+    const grid = document.getElementById('coach-photo-gallery');
+    if (!grid) return;
+    const urls = [mainPhoto, ...(Array.isArray(gallery) ? gallery : [])].filter((url, index, all) => safeExternalUrl(url) !== '#' && all.indexOf(url) === index).slice(0, 9);
+    grid.replaceChildren();
+    if (urls.length < 2) { grid.hidden = true; return; }
+    grid.hidden = false;
+    urls.slice(1).forEach((url, index) => {
+      const link = document.createElement('a'); link.href = safeExternalUrl(url); link.target = '_blank'; link.rel = 'noopener';
+      const image = document.createElement('img'); image.src = safeExternalUrl(url); image.alt = `${altText || 'Фото тренера'} — ${index + 2}`; image.loading = 'lazy';
+      link.append(image); grid.append(link);
     });
   }
 

@@ -28,6 +28,7 @@ const defaultConfig = {
   coachQuote: '«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».',
   coachPhoto: 'https://images.pexels.com/photos/4574138/pexels-photo-4574138.jpeg?auto=compress&cs=tinysrgb&w=1600',
   coachPhotoAlt: 'Спортсмен работает на лапах с тренером в боксерском зале',
+  coachGallery: [],
   coachVideos: [],
   phone: '+7(986)023-13-13',
   phoneHref: '+79860231313',
@@ -45,6 +46,9 @@ const adminEmails = ['brucenet2112@gmail.com'];
 const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth(firebaseApp);
 const db = firebase.firestore(firebaseApp);
+const storage = firebase.storage(firebaseApp);
+let coachGalleryUrls = [];
+let selectedCoachPhotos = [];
 
 const authScreen = document.getElementById('auth-screen');
 const adminScreen = document.getElementById('admin-screen');
@@ -151,6 +155,7 @@ function readConfigFromForm() {
     meta: sanitizeText(fields.meta?.value),
     poster: sanitizeText(fields.poster?.value)
   })).filter((video) => video.url || video.title);
+  values.coachGallery = coachGalleryUrls.slice(0, 8);
 
   if (rawConfigDirty && rawConfig && rawConfig.value.trim()) {
     try {
@@ -193,10 +198,49 @@ function fillForm(data) {
     const video = { ...(coachVideos[index] || {}) };
     Object.entries(fields).forEach(([key, input]) => { if (input) input.value = sanitizeText(video[key]); });
   });
+  coachGalleryUrls = Array.isArray(config.coachGallery) ? config.coachGallery.filter((url) => typeof url === 'string') : [];
+  renderCoachGalleryList();
 
   if (rawConfig) rawConfig.value = JSON.stringify(config, null, 2);
   rawConfigDirty = false;
   applyPreview(config);
+}
+
+function renderCoachGalleryList() {
+  const list = document.getElementById('coach-gallery-list');
+  if (!list) return;
+  list.replaceChildren();
+  coachGalleryUrls.forEach((url, index) => {
+    const item = document.createElement('div'); item.className = 'gallery-item';
+    const image = document.createElement('img'); image.src = url; image.alt = `Фото ${index + 1}`;
+    const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'ghost'; remove.textContent = 'Убрать';
+    remove.addEventListener('click', () => { coachGalleryUrls.splice(index, 1); renderCoachGalleryList(); syncEditorsFromInput(); });
+    item.append(image, remove); list.append(item);
+  });
+}
+
+async function uploadCoachPhotos() {
+  if (!selectedCoachPhotos.length) return;
+  if (!auth.currentUser) throw new Error('Сначала войдите в админ-панель');
+  if (selectedCoachPhotos.some((file) => !file.type.startsWith('image/') || file.size > 15 * 1024 * 1024)) {
+    throw new Error('Каждый файл должен быть изображением до 15 МБ');
+  }
+  const files = selectedCoachPhotos.slice(0, 8 - coachGalleryUrls.length);
+  if (!files.length) throw new Error('Можно хранить не больше 8 фотографий');
+  setStatus(`Загрузка фото: 0/${files.length}`);
+  for (let index = 0; index < files.length; index += 1) {
+    const file = files[index];
+    const safeName = file.name.toLowerCase().replace(/[^a-z0-9а-яё._-]+/gi, '-').slice(-80) || `photo-${index}.jpg`;
+    const ref = storage.ref(`coach/gallery/${auth.currentUser.uid}/${Date.now()}-${index}-${safeName}`);
+    await ref.put(file, { contentType: file.type });
+    coachGalleryUrls.push(await ref.getDownloadURL());
+    setStatus(`Загрузка фото: ${index + 1}/${files.length}`);
+  }
+  selectedCoachPhotos = [];
+  const input = document.getElementById('coachPhotoFiles'); if (input) input.value = '';
+  renderCoachGalleryList();
+  syncEditorsFromInput();
+  setStatus('Фото загружены. Нажмите «Сохранить изменения»');
 }
 
 function applyPreview(config) {
@@ -273,6 +317,17 @@ function bindUi() {
       catch (error) { setError('JSON невалиден, но поле всё ещё можно редактировать.'); }
     });
   }
+
+  const photoInput = document.getElementById('coachPhotoFiles');
+  photoInput?.addEventListener('change', () => {
+    selectedCoachPhotos = Array.from(photoInput.files || []).slice(0, 8);
+    const status = document.getElementById('coach-upload-status');
+    if (status) status.textContent = selectedCoachPhotos.length ? `Выбрано файлов: ${selectedCoachPhotos.length}` : '';
+  });
+  document.getElementById('upload-coach-photos')?.addEventListener('click', async () => {
+    try { await uploadCoachPhotos(); }
+    catch (error) { setError(error.message || 'Не удалось загрузить фото'); setStatus('Ошибка загрузки', true); }
+  });
 
   document.getElementById('apply-json-btn')?.addEventListener('click', () => {
     try {
