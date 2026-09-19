@@ -24,6 +24,11 @@ const defaultConfig = {
     { label: '01 / техника', title: 'Как поставить жёсткий удар?', meta: '11:46 · YouTube', url: 'https://www.youtube.com/watch?v=Ld2trkWJ9gE' },
     { label: '02 / защита', title: 'Защитные действия в боксе', meta: '13:53 · YouTube', url: 'https://www.youtube.com/watch?v=qLHEVxqoW4U' }
   ],
+  coachName: 'Роман <span class="coach-name">Роландович</span>',
+  coachQuote: '«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».',
+  coachPhoto: 'https://images.pexels.com/photos/4574138/pexels-photo-4574138.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  coachPhotoAlt: 'Спортсмен работает на лапах с тренером в боксерском зале',
+  coachVideos: [],
   phone: '+7(986)023-13-13',
   phoneHref: '+79860231313',
   waPhone: '+79860231313',
@@ -70,7 +75,11 @@ const inputMap = {
   instagramLink: document.getElementById('instagramLink'),
   philosophyText: document.getElementById('philosophyText'),
   philosophyQuote: document.getElementById('philosophyQuote'),
-  academyTitle: document.getElementById('academyTitle')
+  academyTitle: document.getElementById('academyTitle'),
+  coachName: document.getElementById('coachName'),
+  coachQuote: document.getElementById('coachQuote'),
+  coachPhoto: document.getElementById('coachPhoto'),
+  coachPhotoAlt: document.getElementById('coachPhotoAlt')
 };
 
 const videoFields = [1, 2, 3].map((index) => ({
@@ -79,6 +88,12 @@ const videoFields = [1, 2, 3].map((index) => ({
   title: document.getElementById(`video${index}Title`),
   meta: document.getElementById(`video${index}Meta`),
   image: document.getElementById(`video${index}Image`)
+}));
+const coachVideoFields = [1, 2, 3].map((index) => ({
+  url: document.getElementById(`coachVideo${index}Url`),
+  title: document.getElementById(`coachVideo${index}Title`),
+  meta: document.getElementById(`coachVideo${index}Meta`),
+  poster: document.getElementById(`coachVideo${index}Poster`)
 }));
 let rawConfigDirty = false;
 
@@ -130,6 +145,12 @@ function readConfigFromForm() {
     ...(fields.image ? { image: sanitizeText(fields.image.value) } : {})
   }));
   values.academyVideos = videos.filter((video) => video.url || video.title);
+  values.coachVideos = coachVideoFields.map((fields) => ({
+    url: sanitizeText(fields.url?.value),
+    title: sanitizeText(fields.title?.value),
+    meta: sanitizeText(fields.meta?.value),
+    poster: sanitizeText(fields.poster?.value)
+  })).filter((video) => video.url || video.title);
 
   if (rawConfigDirty && rawConfig && rawConfig.value.trim()) {
     try {
@@ -165,6 +186,11 @@ function fillForm(data) {
   const videos = Array.isArray(config.academyVideos) ? config.academyVideos : defaultConfig.academyVideos;
   videoFields.forEach((fields, index) => {
     const video = { ...(defaultConfig.academyVideos[index] || {}), ...(videos[index] || {}) };
+    Object.entries(fields).forEach(([key, input]) => { if (input) input.value = sanitizeText(video[key]); });
+  });
+  const coachVideos = Array.isArray(config.coachVideos) ? config.coachVideos : defaultConfig.coachVideos;
+  coachVideoFields.forEach((fields, index) => {
+    const video = { ...(coachVideos[index] || {}) };
     Object.entries(fields).forEach(([key, input]) => { if (input) input.value = sanitizeText(video[key]); });
   });
 
@@ -236,7 +262,7 @@ function toggleSection(sectionName) {
 }
 
 function bindUi() {
-  [...Object.values(inputMap), ...videoFields.flatMap((fields) => Object.values(fields))].forEach((input) => {
+  [...Object.values(inputMap), ...videoFields.flatMap((fields) => Object.values(fields)), ...coachVideoFields.flatMap((fields) => Object.values(fields))].forEach((input) => {
     if (input) input.addEventListener('input', syncEditorsFromInput);
   });
 

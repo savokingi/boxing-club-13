@@ -23,6 +23,11 @@
       { label: '01 / техника', title: 'Как поставить жёсткий удар?', meta: '11:46 · YouTube', url: 'https://www.youtube.com/watch?v=Ld2trkWJ9gE' },
       { label: '02 / защита', title: 'Защитные действия в боксе', meta: '13:53 · YouTube', url: 'https://www.youtube.com/watch?v=qLHEVxqoW4U' }
     ],
+    coachName: 'Роман <span class="coach-name">Роландович</span>',
+    coachQuote: '«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».',
+    coachPhoto: 'https://images.pexels.com/photos/4574138/pexels-photo-4574138.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    coachPhotoAlt: 'Спортсмен работает на лапах с тренером в боксерском зале',
+    coachVideos: [],
     phone: '+7(986)023-13-13',
     phoneHref: '+79860231313',
     waPhone: '+79860231313',
@@ -69,6 +74,9 @@
     const footerWa = document.getElementById('footerWa');
     const footerAddress = document.getElementById('footerAddress');
     const mediaTitle = document.getElementById('media-title');
+    const coachName = document.getElementById('coachName');
+    const coachQuote = document.getElementById('coachQuote');
+    const coachPhoto = document.getElementById('coachPhoto');
 
     if (brandName) brandName.textContent = config.siteName || defaultConfig.siteName;
     if (heroKicker) heroKicker.textContent = config.heroKicker || defaultConfig.heroKicker;
@@ -80,6 +88,13 @@
     if (philosophyQuote) philosophyQuote.textContent = config.philosophyQuote || defaultConfig.philosophyQuote;
     if (mediaTitle) mediaTitle.textContent = config.academyTitle || defaultConfig.academyTitle;
     renderAcademy(config.academyVideos);
+    if (coachName) coachName.innerHTML = config.coachName || defaultConfig.coachName;
+    if (coachQuote) coachQuote.textContent = config.coachQuote || defaultConfig.coachQuote;
+    if (coachPhoto) {
+      coachPhoto.src = config.coachPhoto || defaultConfig.coachPhoto;
+      coachPhoto.alt = config.coachPhotoAlt || defaultConfig.coachPhotoAlt;
+    }
+    renderCoachVideos(config.coachVideos);
     if (contactHeading) contactHeading.textContent = config.contactHeading || defaultConfig.contactHeading;
     if (addressLine) addressLine.innerHTML = config.addressLine || defaultConfig.addressLine;
     if (phoneText) phoneText.textContent = config.phone || defaultConfig.phone;
@@ -107,6 +122,10 @@
       const parsed = new URL(url);
       return /^https?:$/.test(parsed.protocol) && /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(parsed.hostname) ? parsed.href : '#';
     } catch (_) { return '#'; }
+  };
+  const safeExternalUrl = (url) => {
+    try { const parsed = new URL(url); return /^https?:$/.test(parsed.protocol) ? parsed.href : '#'; }
+    catch (_) { return '#'; }
   };
 
   function renderAcademy(videos) {
@@ -147,6 +166,38 @@
       card.append(label, title, info); stack.append(card);
     });
     grid.append(stack);
+  }
+
+  function renderCoachVideos(videos) {
+    const grid = document.getElementById('coach-video-grid');
+    if (!grid) return;
+    const items = Array.isArray(videos) ? videos.filter((item) => item && item.url).slice(0, 3) : [];
+    grid.replaceChildren();
+    if (!items.length) {
+      grid.hidden = true;
+      return;
+    }
+    grid.hidden = false;
+    items.forEach((video, index) => {
+      const card = document.createElement('a');
+      card.className = 'coach-video-card';
+      card.href = safeExternalUrl(video.url);
+      card.target = '_blank';
+      card.rel = 'noopener';
+      if (video.poster) {
+        const poster = document.createElement('img');
+        poster.src = video.poster;
+        poster.alt = video.title || `Видео тренера ${index + 1}`;
+        poster.loading = 'lazy';
+        card.append(poster);
+      }
+      const body = document.createElement('span'); body.className = 'coach-video-body';
+      const number = document.createElement('small'); number.textContent = `0${index + 1} / видео тренера`;
+      const title = document.createElement('strong'); title.textContent = video.title || 'Видео тренера';
+      const meta = document.createElement('span'); meta.textContent = video.meta || 'Смотреть видео ↗';
+      const play = document.createElement('i'); play.className = 'coach-video-play'; play.setAttribute('aria-hidden', 'true'); play.textContent = '↗';
+      body.append(number, title, meta, play); card.append(body); grid.append(card);
+    });
   }
 
   async function loadConfig() {
