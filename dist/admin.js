@@ -48,6 +48,7 @@ const auth = firebase.auth(firebaseApp);
 const db = firebase.firestore(firebaseApp);
 let coachGalleryUrls = [];
 let selectedCoachPhotos = [];
+let selectedCoachMainPhoto = null;
 
 const authScreen = document.getElementById('auth-screen');
 const adminScreen = document.getElementById('admin-screen');
@@ -199,6 +200,8 @@ function fillForm(data) {
   });
   coachGalleryUrls = Array.isArray(config.coachGallery) ? config.coachGallery.filter((url) => typeof url === 'string').slice(0, 4) : [];
   renderCoachGalleryList();
+  const mainPhotoPreview = document.getElementById('coach-main-photo-preview');
+  if (mainPhotoPreview && config.coachPhoto) { mainPhotoPreview.src = config.coachPhoto; mainPhotoPreview.hidden = false; }
 
   if (rawConfig) rawConfig.value = JSON.stringify(config, null, 2);
   rawConfigDirty = false;
@@ -264,6 +267,24 @@ async function uploadCoachPhotos() {
   renderCoachGalleryList();
   syncEditorsFromInput();
   setStatus('Фото подготовлены. Нажмите «Сохранить изменения»');
+}
+
+async function uploadCoachMainPhoto() {
+  if (!selectedCoachMainPhoto) throw new Error('Сначала выберите файл главного фото');
+  if (!selectedCoachMainPhoto.type.startsWith('image/') || selectedCoachMainPhoto.size > 15 * 1024 * 1024) {
+    throw new Error('Главное фото должно быть изображением до 15 МБ');
+  }
+  setStatus('Подготовка главного фото…');
+  const dataUrl = await compressImage(selectedCoachMainPhoto);
+  inputMap.coachPhoto.value = dataUrl;
+  const preview = document.getElementById('coach-main-photo-preview');
+  if (preview) { preview.src = dataUrl; preview.hidden = false; }
+  selectedCoachMainPhoto = null;
+  const input = document.getElementById('coachPhotoFile'); if (input) input.value = '';
+  syncEditorsFromInput();
+  const status = document.getElementById('coach-main-photo-status');
+  if (status) status.textContent = 'Фото подготовлено. Нажмите «Сохранить изменения»';
+  setStatus('Главное фото подготовлено');
 }
 
 function applyPreview(config) {
@@ -350,6 +371,12 @@ function bindUi() {
   document.getElementById('upload-coach-photos')?.addEventListener('click', async () => {
     try { await uploadCoachPhotos(); }
     catch (error) { setError(error.message || 'Не удалось загрузить фото'); setStatus('Ошибка загрузки', true); }
+  });
+  const mainPhotoInput = document.getElementById('coachPhotoFile');
+  mainPhotoInput?.addEventListener('change', () => { selectedCoachMainPhoto = mainPhotoInput.files?.[0] || null; });
+  document.getElementById('upload-coach-main-photo')?.addEventListener('click', async () => {
+    try { await uploadCoachMainPhoto(); }
+    catch (error) { setError(error.message || 'Не удалось подготовить главное фото'); setStatus('Ошибка загрузки', true); }
   });
 
   document.getElementById('apply-json-btn')?.addEventListener('click', () => {

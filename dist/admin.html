@@ -185,6 +185,7 @@
     .gallery-item { display: grid; gap: 6px; min-width: 0; }
     .gallery-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--line); }
     .gallery-item button { padding: 7px 8px; font-size: .7rem; }
+    .main-photo-preview { width: min(100%, 360px); aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--line); }
     @media (max-width: 980px) { .video-fields, .coach-video-fields { grid-template-columns: 1fr; } .gallery-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 640px) { .gallery-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   </style>
@@ -308,7 +309,13 @@
                   <label>Имя тренера<br><input id="coachName" type="text"></label>
                   <label>Подпись к фото<br><input id="coachPhotoAlt" type="text"></label>
                   <label style="grid-column: 1 / -1;">Цитата тренера<br><textarea id="coachQuote"></textarea></label>
-                  <label style="grid-column: 1 / -1;">Ссылка на главное фото<br><input id="coachPhoto" type="url" placeholder="https://..."></label>
+                  <label style="grid-column: 1 / -1;">Ссылка на главное фото (необязательно)<br><input id="coachPhoto" type="text" placeholder="https://..."></label>
+                  <div style="grid-column: 1 / -1;" class="photo-upload-box main-photo-upload">
+                    <label>Или загрузить главное фото с компьютера<br><input id="coachPhotoFile" type="file" accept="image/*"></label>
+                    <button id="upload-coach-main-photo" class="secondary" type="button">Загрузить главное фото</button>
+                    <div id="coach-main-photo-status" class="field-hint"></div>
+                    <img id="coach-main-photo-preview" class="main-photo-preview" alt="Предпросмотр главного фото" hidden>
+                  </div>
                   <div style="grid-column: 1 / -1;" class="photo-upload-box">
                     <label>Загрузить несколько фото с компьютера (до 4)<br><input id="coachPhotoFiles" type="file" accept="image/*" multiple></label>
                     <button id="upload-coach-photos" class="secondary" type="button">Загрузить выбранные фото</button>
@@ -379,6 +386,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="admin.js?v=20260919-5"></script>
+  <script src="admin.js?v=20260919-6"></script>
 </body>
 </html>
