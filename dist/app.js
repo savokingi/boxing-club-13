@@ -102,15 +102,6 @@
     document.title = `${config.siteName || defaultConfig.siteName} — Ростов-на-Дону`;
   };
 
-  const youtubeId = (url) => {
-    try {
-      const parsed = new URL(url);
-      if (parsed.hostname.includes('youtu.be')) return parsed.pathname.slice(1).split('/')[0];
-      if (parsed.hostname.includes('youtube.com')) return parsed.searchParams.get('v') || parsed.pathname.split('/').pop();
-    } catch (_) { return ''; }
-    return '';
-  };
-
   const safeVideoUrl = (url) => {
     try {
       const parsed = new URL(url);
