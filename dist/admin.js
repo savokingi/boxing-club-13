@@ -46,7 +46,6 @@ const adminEmails = ['brucenet2112@gmail.com'];
 const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth(firebaseApp);
 const db = firebase.firestore(firebaseApp);
-const storage = firebase.storage(firebaseApp);
 let coachGalleryUrls = [];
 let selectedCoachPhotos = [];
 
@@ -155,7 +154,7 @@ function readConfigFromForm() {
     meta: sanitizeText(fields.meta?.value),
     poster: sanitizeText(fields.poster?.value)
   })).filter((video) => video.url || video.title);
-  values.coachGallery = coachGalleryUrls.slice(0, 8);
+  values.coachGallery = coachGalleryUrls.slice(0, 4);
 
   if (rawConfigDirty && rawConfig && rawConfig.value.trim()) {
     try {
@@ -198,7 +197,7 @@ function fillForm(data) {
     const video = { ...(coachVideos[index] || {}) };
     Object.entries(fields).forEach(([key, input]) => { if (input) input.value = sanitizeText(video[key]); });
   });
-  coachGalleryUrls = Array.isArray(config.coachGallery) ? config.coachGallery.filter((url) => typeof url === 'string') : [];
+  coachGalleryUrls = Array.isArray(config.coachGallery) ? config.coachGallery.filter((url) => typeof url === 'string').slice(0, 4) : [];
   renderCoachGalleryList();
 
   if (rawConfig) rawConfig.value = JSON.stringify(config, null, 2);
@@ -219,28 +218,52 @@ function renderCoachGalleryList() {
   });
 }
 
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Не удалось прочитать изображение'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('Файл не является изображением'));
+      image.onload = () => {
+        const maxSide = 1500;
+        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+        let quality = .78;
+        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+        while (dataUrl.length > 150000 && quality > .42) {
+          quality -= .08;
+          dataUrl = canvas.toDataURL('image/jpeg', quality);
+        }
+        if (dataUrl.length > 165000) reject(new Error('Изображение слишком большое даже после сжатия'));
+        else resolve(dataUrl);
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 async function uploadCoachPhotos() {
   if (!selectedCoachPhotos.length) return;
-  if (!auth.currentUser) throw new Error('Сначала войдите в админ-панель');
   if (selectedCoachPhotos.some((file) => !file.type.startsWith('image/') || file.size > 15 * 1024 * 1024)) {
     throw new Error('Каждый файл должен быть изображением до 15 МБ');
   }
-  const files = selectedCoachPhotos.slice(0, 8 - coachGalleryUrls.length);
-  if (!files.length) throw new Error('Можно хранить не больше 8 фотографий');
+  const files = selectedCoachPhotos.slice(0, 4 - coachGalleryUrls.length);
+  if (!files.length) throw new Error('Можно хранить не больше 4 фотографий в Firestore');
   setStatus(`Загрузка фото: 0/${files.length}`);
   for (let index = 0; index < files.length; index += 1) {
-    const file = files[index];
-    const safeName = file.name.toLowerCase().replace(/[^a-z0-9а-яё._-]+/gi, '-').slice(-80) || `photo-${index}.jpg`;
-    const ref = storage.ref(`coach/gallery/${auth.currentUser.uid}/${Date.now()}-${index}-${safeName}`);
-    await ref.put(file, { contentType: file.type });
-    coachGalleryUrls.push(await ref.getDownloadURL());
-    setStatus(`Загрузка фото: ${index + 1}/${files.length}`);
+    coachGalleryUrls.push(await compressImage(files[index]));
+    setStatus(`Подготовка фото: ${index + 1}/${files.length}`);
   }
   selectedCoachPhotos = [];
   const input = document.getElementById('coachPhotoFiles'); if (input) input.value = '';
   renderCoachGalleryList();
   syncEditorsFromInput();
-  setStatus('Фото загружены. Нажмите «Сохранить изменения»');
+  setStatus('Фото подготовлены. Нажмите «Сохранить изменения»');
 }
 
 function applyPreview(config) {

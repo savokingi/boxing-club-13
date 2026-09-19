@@ -126,6 +126,7 @@
     } catch (_) { return '#'; }
   };
   const safeExternalUrl = (url) => {
+    if (typeof url === 'string' && /^data:image\/(jpeg|png|webp);base64,/.test(url)) return url;
     try { const parsed = new URL(url); return /^https?:$/.test(parsed.protocol) ? parsed.href : '#'; }
     catch (_) { return '#'; }
   };
