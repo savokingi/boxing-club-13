@@ -18,6 +18,11 @@
     philosophyText: '<strong>Бокс — это больше, чем удары.</strong> Каждая тренировка делает тебя сильнее, дисциплинированнее и увереннее. Мы учим не просто технике — мы закаляем характер и готовим к тому, чтобы не сдаваться ни в ринге, ни в жизни.',
     philosophyQuote: 'Бокс — это больше, чем удары.',
     academyTitle: 'Не просто отрабатываем движения — учимся понимать бокс и применять его на практике.',
+    academyVideos: [
+      { label: 'Избранное / техника', title: 'Как поставить нокаутирующий удар?', meta: '18 000 просмотров · 04:39', url: 'https://www.youtube.com/watch?v=OnK1vq9VSEw', image: 'https://images.pexels.com/photos/6720433/pexels-photo-6720433.jpeg?auto=compress&cs=tinysrgb&w=1600' },
+      { label: '01 / техника', title: 'Как поставить жёсткий удар?', meta: '11:46 · YouTube', url: 'https://www.youtube.com/watch?v=Ld2trkWJ9gE' },
+      { label: '02 / защита', title: 'Защитные действия в боксе', meta: '13:53 · YouTube', url: 'https://www.youtube.com/watch?v=qLHEVxqoW4U' }
+    ],
     phone: '+7(986)023-13-13',
     phoneHref: '+79860231313',
     waPhone: '+79860231313',
@@ -63,6 +68,7 @@
     const footerPhone = document.getElementById('footerPhone');
     const footerWa = document.getElementById('footerWa');
     const footerAddress = document.getElementById('footerAddress');
+    const mediaTitle = document.getElementById('media-title');
 
     if (brandName) brandName.textContent = config.siteName || defaultConfig.siteName;
     if (heroKicker) heroKicker.textContent = config.heroKicker || defaultConfig.heroKicker;
@@ -72,6 +78,8 @@
     if (heroLead) heroLead.textContent = config.heroLead || defaultConfig.heroLead;
     if (philosophyText) philosophyText.innerHTML = config.philosophyText || defaultConfig.philosophyText;
     if (philosophyQuote) philosophyQuote.textContent = config.philosophyQuote || defaultConfig.philosophyQuote;
+    if (mediaTitle) mediaTitle.textContent = config.academyTitle || defaultConfig.academyTitle;
+    renderAcademy(config.academyVideos);
     if (contactHeading) contactHeading.textContent = config.contactHeading || defaultConfig.contactHeading;
     if (addressLine) addressLine.innerHTML = config.addressLine || defaultConfig.addressLine;
     if (phoneText) phoneText.textContent = config.phone || defaultConfig.phone;
@@ -93,6 +101,62 @@
     if (footerAddress) footerAddress.textContent = config.addressLine ? config.addressLine.replace(/<br>/g, ' / ') : 'ул. Еляна, 68 / Будённовский, 80';
     document.title = `${config.siteName || defaultConfig.siteName} — Ростов-на-Дону`;
   };
+
+  const youtubeId = (url) => {
+    try {
+      const parsed = new URL(url);
+      if (parsed.hostname.includes('youtu.be')) return parsed.pathname.slice(1).split('/')[0];
+      if (parsed.hostname.includes('youtube.com')) return parsed.searchParams.get('v') || parsed.pathname.split('/').pop();
+    } catch (_) { return ''; }
+    return '';
+  };
+
+  const safeVideoUrl = (url) => {
+    try {
+      const parsed = new URL(url);
+      return /^https?:$/.test(parsed.protocol) && /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(parsed.hostname) ? parsed.href : '#';
+    } catch (_) { return '#'; }
+  };
+
+  function renderAcademy(videos) {
+    const grid = document.getElementById('academy-grid');
+    if (!grid) return;
+    const items = Array.isArray(videos) && videos.length ? videos : defaultConfig.academyVideos;
+    const normalized = items.slice(0, 3).map((item, index) => ({
+      ...defaultConfig.academyVideos[index],
+      ...(item || {})
+    }));
+    grid.replaceChildren();
+    const featured = normalized[0];
+    const feature = document.createElement('a');
+    feature.className = 'media-feature';
+    feature.href = safeVideoUrl(featured.url);
+    feature.target = '_blank';
+    feature.rel = 'noopener';
+    if (feature.href === '#') feature.setAttribute('aria-disabled', 'true');
+    if (featured.image) {
+      const image = document.createElement('img');
+      image.src = featured.image;
+      image.alt = featured.title || 'Видео бесплатной академии';
+      image.loading = 'lazy';
+      feature.append(image);
+    }
+    const overlay = document.createElement('div');
+    overlay.className = 'media-overlay';
+    overlay.innerHTML = '<span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6.5v11l9-5.5-9-5.5Z" fill="currentColor"/></svg></span>';
+    const meta = document.createElement('small'); meta.textContent = featured.meta || '';
+    const heading = document.createElement('h3'); heading.textContent = featured.title || '';
+    overlay.append(meta, heading); feature.append(overlay); grid.append(feature);
+    const stack = document.createElement('div'); stack.className = 'media-stack';
+    normalized.slice(1).forEach((video) => {
+      const card = document.createElement('a'); card.className = 'media-card'; card.href = safeVideoUrl(video.url); card.target = '_blank'; card.rel = 'noopener';
+      const label = document.createElement('span'); label.textContent = video.label || 'Академия';
+      const title = document.createElement('h3'); title.textContent = video.title || 'Видео клуба';
+      const info = document.createElement('small'); info.textContent = video.meta || 'YouTube';
+      card.append(label, title, info); stack.append(card);
+    });
+    grid.append(stack);
+  }
 
   async function loadConfig() {
     try {

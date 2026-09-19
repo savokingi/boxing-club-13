@@ -108,10 +108,7 @@
     <section class="section section-rule" id="media" aria-labelledby="media-title">
       <div class="container">
         <p class="kicker">Бесплатная академия</p><h2 class="section-heading reveal" id="media-title">Не просто отрабатываем движения — учимся понимать бокс и применять его на практике.</h2>
-        <div class="media-grid reveal">
-          <a class="media-feature" href="https://www.youtube.com/watch?v=OnK1vq9VSEw" target="_blank" rel="noopener"><img src="https://images.pexels.com/photos/6720433/pexels-photo-6720433.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Юный спортсмен занимается с тренером по боксу"><div class="media-overlay"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6.5v11l9-5.5-9-5.5Z" fill="currentColor"/></svg></span><small>18 000 просмотров · 04:39</small><h3>Как поставить нокаутирующий удар?</h3></div></a>
-          <div class="media-stack"><a class="media-card" href="https://www.youtube.com/watch?v=Ld2trkWJ9gE" target="_blank" rel="noopener"><span>01 / техника</span><h3>Как поставить жёсткий удар?</h3><small>11:46 · YouTube</small></a><a class="media-card" href="https://www.youtube.com/watch?v=qLHEVxqoW4U" target="_blank" rel="noopener"><span>02 / защита</span><h3>Защитные действия в боксе</h3><small>13:53 · YouTube</small></a></div>
-        </div>
+        <div class="media-grid reveal" id="academy-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -144,7 +141,8 @@
           <button class="map-tab" data-target="budennovsky" type="button">пр. Будённовский, 80</button>
         </div>
         <div class="map-container" id="map-elyana">
-          <iframe src="https://yandex.ru/map-widget/v1/org/119336502295" width="100%" height="100%" style="display:block;border:0;" allowfullscreen="true" loading="lazy"></iframe>
+          <iframe src="https://maps.app.goo.gl/2zayHmA9AC6eWcj77?g_st=ic" title="Боксёрский клуб 13 на Google Maps" width="100%" height="100%" style="display:block;border:0;" allowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a class="map-external-link" href="https://maps.app.goo.gl/2zayHmA9AC6eWcj77?g_st=ic" target="_blank" rel="noopener">Открыть в Google Maps <span aria-hidden="true">↗</span></a>
         </div>
         <div class="map-container" id="map-budennovsky" style="display:none;">
           <iframe src="https://yandex.ru/map-widget/v1/org/114926298963" width="100%" height="100%" style="display:block;border:0;" allowfullscreen="true" loading="lazy"></iframe>
@@ -169,6 +167,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="app.js?v=20260919-2"></script>
+  <script src="app.js?v=20260919-3"></script>
 </body>
 </html>

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Админ-панель · Боксерский клуб 13</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-strong: #121316;
+      --panel: rgba(17, 18, 21, 0.96);
+      --panel-soft: #17191d;
+      --paper: #f5f1ea;
+      --ink: #121417;
+      --muted: #9e978f;
+      --line: rgba(255,255,255,0.08);
+      --red: #e1282d;
+      --red-soft: rgba(225, 40, 45, 0.12);
+      --green: #1a8f5c;
+      --warning: #ffca75;
+      --shadow: 0 25px 80px rgba(0,0,0,0.38);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--paper); }
+    body { padding: 28px 18px; }
+    button, input, textarea { font: inherit; }
+    .hidden { display: none !important; }
+
+    .admin-shell { max-width: 1400px; margin: 0 auto; }
+    .auth-wrap {
+      min-height: calc(100vh - 56px);
+      display: grid;
+      place-items: center;
+    }
+    .auth-card, .admin-card {
+      background: linear-gradient(180deg, rgba(18,19,22,0.98), rgba(13,14,17,0.98));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .auth-card {
+      width: min(100%, 440px);
+      padding: 28px;
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .brand-mark {
+      width: 50px; height: 50px; border-radius: 14px; background: var(--red); color: #fff;
+      display: grid; place-items: center; font-size: 1.25rem; font-weight: 900;
+    }
+    .brand-row h1 { margin: 0; font-size: clamp(1.6rem, 2vw, 2.1rem); }
+    .subtitle { color: var(--muted); margin-top: 4px; }
+
+    .field-stack { display: grid; gap: 16px; }
+    label {
+      display: grid; gap: 8px; color: rgba(255,255,255,0.78);
+      font-size: 0.74rem; letter-spacing: 0.09em; text-transform: uppercase;
+    }
+    input, textarea {
+      width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02);
+      color: var(--paper); border-radius: 12px; padding: 12px 14px; font-size: 0.98rem;
+      resize: vertical;
+    }
+    input:focus, textarea:focus { outline: 2px solid rgba(225, 40, 45, 0.35); border-color: rgba(225, 40, 45, 0.5); }
+    textarea { min-height: 110px; }
+
+    .primary, .secondary, .ghost {
+      border: none; border-radius: 12px; min-height: 46px; padding: 0 18px; cursor: pointer;
+      font-weight: 700; transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .primary:hover, .secondary:hover, .ghost:hover { transform: translateY(-1px); }
+    .primary { background: var(--red); color: white; }
+    .secondary { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--paper); }
+    .ghost { background: var(--red-soft); color: var(--paper); border: 1px solid rgba(225, 40, 45, 0.25); }
+    .danger { background: rgba(255, 92, 92, 0.08); border: 1px solid rgba(255,92,92,0.25); color: #ffd7d7; }
+
+    .error-text, .status-text {
+      min-height: 20px; font-size: 0.92rem;
+    }
+    .error-text { color: #ffb9b9; }
+    .status-text { color: #c8f3d4; }
+
+    .admin-card { padding: 22px; }
+    .toolbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .toolbar-head h2 { margin: 0; font-size: clamp(1.5rem, 2.2vw, 2.2rem); }
+    .toolbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) minmax(260px, 340px);
+      gap: 18px;
+      align-items: start;
+    }
+    .panel {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .sidebar-nav { display: grid; gap: 8px; }
+    .nav-btn {
+      width: 100%; text-align: left; background: transparent; color: var(--paper); border: 1px solid transparent;
+      border-radius: 12px; padding: 11px 12px; cursor: pointer; font-weight: 600;
+    }
+    .nav-btn.active {
+      background: var(--red-soft);
+      border-color: rgba(225, 40, 45, 0.35);
+      color: #fff;
+    }
+
+    .main-panel { display: grid; gap: 18px; }
+    .section-block { display: none; }
+    .section-block.active { display: grid; gap: 18px; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .field-grid.single { grid-template-columns: 1fr; }
+    .field-grid label { margin: 0; }
+    .section-title {
+      margin: 0 0 4px; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    }
+    .divider { height: 1px; background: var(--line); margin: 4px 0 0; }
+
+    .action-bar {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+      padding-top: 10px;
+    }
+
+    .preview-card {
+      position: sticky; top: 24px;
+      display: grid; gap: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid var(--line); border-radius: 18px; padding: 16px;
+    }
+    .preview-shell {
+      background: linear-gradient(180deg, #111316, #0d0e12 42%, #121417 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 16px;
+      overflow: hidden;
+    }
+    .preview-header {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px;
+    }
+    .preview-badge { width: 26px; height: 26px; border-radius: 9px; background: var(--red); display: grid; place-items: center; font-size: 0.82rem; font-weight: 800; }
+    .preview-header strong { font-size: 0.92rem; }
+    .preview-hero { display: grid; gap: 8px; }
+    .preview-hero h3 { margin: 0; font-size: clamp(1.8rem, 2.7vw, 2.6rem); line-height: 0.95; }
+    #previewHeroTitle, #previewHeroMiddle { color: #f5f1ea !important; }
+    #previewHeroAccent { color: var(--red) !important; }
+    .preview-hero p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .preview-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .preview-tags span {
+      font-size: 0.72rem; color: #f5f1ea; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 6px 10px;
+    }
+    .preview-contact { display: grid; gap: 8px; margin-top: 18px; }
+    .preview-contact span { color: var(--muted); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .preview-contact strong { font-size: 0.96rem; }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-card { position: static; }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      body { padding: 14px 12px; }
+      .admin-card { padding: 16px; }
+      .toolbar { align-items: flex-start; }
+      .toolbar-actions, .action-bar { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-shell">
+    <section id="auth-screen" class="auth-wrap">
+      <div class="auth-card">
+        <div class="brand-row">
+          <div class="brand-mark">13</div>
+          <div>
+            <h1>Админ-панель</h1>
+            <div class="subtitle">Боксерский клуб 13</div>
+          </div>
+        </div>
+
+        <form id="login-form" class="field-stack">
+          <label>
+            Email
+            <input id="email" type="email" placeholder="admin@boxing-club13.ru" autocomplete="email" required>
+          </label>
+          <label>
+            Пароль
+            <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+          </label>
+          <button class="primary" type="submit">Войти в систему</button>
+          <div id="auth-error" class="error-text"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin-screen" class="hidden">
+      <div class="admin-card">
+        <div class="toolbar">
+          <div class="toolbar-head">
+            <h2>Редактор сайта</h2>
+            <div class="subtitle">Контент обновляется в Firestore и виден на публичной странице сразу после сохранения.</div>
+          </div>
+          <div class="toolbar-actions">
+            <button id="load-btn" class="secondary" type="button">Обновить</button>
+            <button id="logout-btn" class="ghost" type="button">Выйти</button>
+          </div>
+        </div>
+
+        <div class="layout">
+          <aside class="panel">
+            <div class="sidebar-nav">
+              <button class="nav-btn active" data-section="general" type="button">Основное</button>
+              <button class="nav-btn" data-section="contacts" type="button">Контакты</button>
+              <button class="nav-btn" data-section="social" type="button">Соцсети</button>
+              <button class="nav-btn" data-section="story" type="button">Философия</button>
+              <button class="nav-btn" data-section="advanced" type="button">JSON / доп. поля</button>
+            </div>
+          </aside>
+
+          <main class="main-panel">
+            <form id="settings-form">
+              <div id="section-general" class="section-block active panel">
+                <p class="section-title">Основное</p>
+                <div class="divider"></div>
+                <div class="field-grid">
+                  <label>Название сайта <input id="siteName" type="text"></label>
+                  <label>Псевдоним бренда <input id="brandName" type="text"></label>
+                  <label>Слоган шапки <input id="heroKicker" type="text"></label>
+                  <label>Мета-тег title <input id="metaTitle" type="text"></label>
+                  <label>Первая строка <input id="heroTitle" type="text"></label>
+                  <label>Средняя строка <input id="heroMiddle" type="text"></label>
+                  <label>Акцент заголовка <input id="heroTitleAccent" type="text"></label>
+                  <label class="full-width" style="grid-column: 1 / -1;">Подзаголовок <textarea id="heroLead"></textarea></label>
+                </div>
+              </div>
+
+              <div id="section-contacts" class="section-block panel">
+                <p class="section-title">Контакты</p>
+                <div class="divider"></div>
+                <div class="field-grid">
+                  <label>Телефон<br><input id="phone" type="text"></label>
+                  <label>WhatsApp<br><input id="waPhone" type="text"></label>
+                  <label style="grid-column: 1 / -1;">Адрес<br><textarea id="addressLine"></textarea></label>
+                  <label style="grid-column: 1 / -1;">Заголовок блока контактов<br><textarea id="contactHeading"></textarea></label>
+                  <label style="grid-column: 1 / -1;">Подпись футера<br><textarea id="footerText"></textarea></label>
+                </div>
+              </div>
+
+              <div id="section-social" class="section-block panel">
+                <p class="section-title">Соцсети</p>
+                <div class="divider"></div>
+                <div class="field-grid">
+                  <label>VK <input id="vkLink" type="url"></label>
+                  <label>Telegram <input id="telegramLink" type="url"></label>
+                  <label>YouTube <input id="youtubeLink" type="url"></label>
+                  <label>Instagram <input id="instagramLink" type="url"></label>
+                </div>
+              </div>
+
+              <div id="section-story" class="section-block panel">
+                <p class="section-title">Философия и академия</p>
+                <div class="divider"></div>
+                <div class="field-grid">
+                  <label style="grid-column: 1 / -1;">Текст философии<br><textarea id="philosophyText"></textarea></label>
+                  <label style="grid-column: 1 / -1;">Цитата<br><textarea id="philosophyQuote"></textarea></label>
+                  <label style="grid-column: 1 / -1;">Заголовок раздела академии<br><textarea id="academyTitle"></textarea></label>
+                  <div class="video-editor" style="grid-column: 1 / -1;">
+                    <p class="field-caption">Ролики бесплатной академии</p>
+                    <p class="field-hint">Укажите ссылки на YouTube. Первый ролик будет большим, два следующих — в боковой колонке.</p>
+                    <div class="video-fields">
+                      <fieldset><legend>Ролик 01 · главный</legend><label>Ссылка YouTube<input id="video1Url" type="url" placeholder="https://www.youtube.com/watch?v=..."></label><label>Метка<input id="video1Label" type="text"></label><label>Заголовок<input id="video1Title" type="text"></label><label>Подпись<input id="video1Meta" type="text" placeholder="04:39 · YouTube"></label><label>Картинка (необязательно)<input id="video1Image" type="url"></label></fieldset>
+                      <fieldset><legend>Ролик 02</legend><label>Ссылка YouTube<input id="video2Url" type="url"></label><label>Метка<input id="video2Label" type="text"></label><label>Заголовок<input id="video2Title" type="text"></label><label>Подпись<input id="video2Meta" type="text"></label></fieldset>
+                      <fieldset><legend>Ролик 03</legend><label>Ссылка YouTube<input id="video3Url" type="url"></label><label>Метка<input id="video3Label" type="text"></label><label>Заголовок<input id="video3Title" type="text"></label><label>Подпись<input id="video3Meta" type="text"></label></fieldset>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="section-advanced" class="section-block panel">
+                <p class="section-title">JSON / расширенные параметры</p>
+                <div class="divider"></div>
+                <div class="field-grid single">
+                  <label>Полный конфиг в JSON<textarea id="rawConfig" aria-label="JSON-конфиг"></textarea></label>
+                  <button id="apply-json-btn" class="secondary" type="button">Применить JSON к форме</button>
+                </div>
+              </div>
+
+              <div class="action-bar">
+                <button id="reset-btn" class="secondary" type="button">Сбросить</button>
+                <button id="save-btn" class="primary" type="submit">Сохранить изменения</button>
+              </div>
+              <div id="save-status" class="status-text"></div>
+              <div id="save-error" class="error-text"></div>
+            </form>
+
+          </main>
+
+          <aside class="preview-card">
+            <div class="preview-shell">
+              <div class="preview-header">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="preview-badge">13</span>
+                  <strong id="previewBrandName">Боксерский клуб</strong>
+                </div>
+                <span style="color: var(--muted); font-size: 0.75rem;">Онлайн</span>
+              </div>
+
+              <div class="preview-hero">
+                <p id="previewKicker" style="color: #d6d1cb; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;">Ростов-на-Дону</p>
+                <h3><span id="previewHeroTitle">Сила</span><br><span id="previewHeroMiddle">начинается</span><br><span id="previewHeroAccent">с техники</span></h3>
+                <p id="previewHeroLead">Бокс для детей и взрослых...</p>
+              </div>
+
+              <div class="preview-tags">
+                <span>Бокс для детей</span>
+                <span>Группы</span>
+                <span>Персонально</span>
+              </div>
+
+              <div class="preview-contact">
+                <span>Контакты</span>
+                <strong id="previewPhone">+7(986)023-13-13</strong>
+                <strong id="previewAddress">ул. Еляна, 68 / пр. Будённовский, 80</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="admin.js?v=20260919-2"></script>
+</body>
+</html>
