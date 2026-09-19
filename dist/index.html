@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260917-2">
+  <link rel="stylesheet" href="styles.css?v=20260919-2">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2309090a'/%3E%3Cpath d='M11 20h16L18 44h16' fill='none' stroke='%23f2efe8' stroke-width='7'/%3E%3Cpath d='M39 19h13v26H37' fill='none' stroke='%23e1282d' stroke-width='7'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -17,9 +17,9 @@
 
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="Боксерский клуб 13 — на главную"><span class="brand-sign"><span>13</span></span><span>Boxing club</span></a>
+      <a class="brand" href="#top" aria-label="Боксерский клуб 13 — на главную"><span class="brand-sign"><span>13</span></span><span id="brandName">Боксерский клуб</span></a>
       <nav class="nav-links" aria-label="Основная навигация">
-        <a href="#programs">Направления</a><a href="#coach">Тренер</a><a href="#schedule">Расписание</a><a href="#media">Медиа</a><a href="#contacts">Контакты</a>
+        <a href="#programs">Направления</a><a href="#coach">Тренер</a><a href="#media">Медиа</a><a href="#contacts">Контакты</a>
       </nav>
       <div class="nav-actions">
         <a class="phone-link" href="tel:+79896301313">+7 989 630-13-13</a>
@@ -30,8 +30,8 @@
   </header>
 
   <div class="mobile-menu" aria-hidden="true">
-    <nav aria-label="Мобильная навигация"><a href="#programs">Направления</a><a href="#coach">Тренер</a><a href="#schedule">Расписание</a><a href="#media">Медиа</a><a href="#contacts">Контакты</a></nav>
-    <div class="mobile-contact">Ростов-на-Дону · ул. Еляна, 68 / пр. Будённовский, 80<br><a href="tel:+79896301313">+7 989 630-13-13</a></div>
+    <nav aria-label="Мобильная навигация"><a href="#programs">Направления</a><a href="#coach">Тренер</a><a href="#media">Медиа</a><a href="#contacts">Контакты</a></nav>
+    <div class="mobile-contact">Ростов-на-Дону · ул. Еляна, 68 / пр. Будённовский, 80<br><a href="tel:+79860231313">+7(986)023-13-13</a></div>
   </div>
 
   <main id="top">
@@ -41,15 +41,15 @@
       <span class="scroll-note">Листайте, чтобы войти в зал</span>
       <div class="container hero-grid">
         <div>
-          <p class="kicker">Ростов-на-Дону · ул. Еляна, 68 · пр. Будённовский, 80</p>
-          <h1>Сила<br>начинается<br><span>с техники</span></h1>
-          <p class="hero-lead">Бокс для детей и взрослых. Групповые и персональные тренировки — с вниманием к движению, характеру и реальному прогрессу.</p>
+          <p class="kicker" id="heroKicker">Ростов-на-Дону · ул. Еляна, 68 · пр. Будённовский, 80</p>
+          <h1><span id="heroTitle">Сила</span><br><span id="heroMiddle">начинается</span><br><span id="heroTitleAccent">с техники</span></h1>
+          <p class="hero-lead" id="heroLead">Бокс для детей и взрослых. Групповые и персональные тренировки — с вниманием к движению, характеру и реальному прогрессу.</p>
           <div class="hero-actions"><button class="button button-primary button-arrow" type="button" data-book>Пробная тренировка</button><a class="button" href="#programs">Выбрать направление</a></div>
         </div>
         <div class="hero-meta" aria-label="Преимущества клуба">
           <div class="hero-stat"><strong>5.0</strong><span>рейтинг клуба<br>на Яндекс Картах</span></div>
-          <div class="hero-stat"><strong>01</strong><span>тренер следит<br>за техникой каждого</span></div>
-          <div class="hero-stat"><strong>∞</strong><span>можно начать<br>с любого уровня</span></div>
+          <div class="hero-stat"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="18" r="9" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 46c2.5-8 7.5-12 14-12s11.5 4 14 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M22 25l-7 12m29-12l7 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span><span>тренер следит<br>за техникой каждого</span></div>
+          <div class="hero-stat"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M15 32c0-8.7 7.1-15.8 15.8-15.8S46.6 23.3 46.6 32S39.5 47.8 30.8 47.8 15 40.7 15 32Zm32.5 0c0-5.4 4.4-9.8 9.8-9.8s9.8 4.4 9.8 9.8S62.7 41.8 57.3 41.8s-9.8-4.4-9.8-9.8Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M31 32h16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M30.5 20v24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span><span>можно начать<br>с любого уровня</span></div>
         </div>
       </div>
     </section>
@@ -74,8 +74,8 @@
 
     <section class="section section-rule">
       <div class="container manifesto">
-        <aside class="manifesto-aside reveal"><p class="kicker">Философия клуба</p><p>Хороший боксёр не расходует движение зря. Хорошая тренировка устроена так же.</p></aside>
-        <div><blockquote class="manifesto-quote reveal">Бокс — это не драка. Это способность сохранять <em>контроль</em>.</blockquote><div class="manifesto-foot reveal"><div><strong>Техника</strong><span>Каждое движение разбирается и корректируется.</span></div><div><strong>Система</strong><span>Нагрузка растёт вместе с уровнем ученика.</span></div><div><strong>Характер</strong><span>Спокойная уверенность вместо показной агрессии.</span></div></div></div>
+        <aside class="manifesto-aside reveal"><p class="kicker">Философия клуба</p><p id="philosophyText"><strong>Бокс — это больше, чем удары.</strong> Каждая тренировка делает тебя сильнее, дисциплинированнее и увереннее. Мы учим не просто технике — мы закаляем характер и готовим к тому, чтобы не сдаваться ни в ринге, ни в жизни.</p></aside>
+        <div><blockquote class="manifesto-quote reveal" id="philosophyQuote">Бокс — это больше, чем удары.</blockquote><div class="manifesto-foot reveal"><div><strong>Техника</strong><span>Каждое движение разбирается и корректируется.</span></div><div><strong>Система</strong><span>Нагрузка растёт вместе с уровнем ученика.</span></div><div><strong>Характер</strong><span>Спокойная уверенность вместо показной агрессии.</span></div></div></div>
       </div>
     </section>
 
@@ -83,10 +83,10 @@
       <div class="container">
         <p class="kicker">Направления</p><h2 class="section-heading reveal" id="programs-title">Не просто нагрузка. Понятный путь вперёд.</h2>
         <div class="program-list">
-          <a class="program-row reveal" href="#booking" data-book><span class="index">01</span><h3>Бокс для детей</h3><p>Координация, физическая база, дисциплина и знакомство с техникой без ненужного давления.</p><span class="round-link">↗</span></a>
-          <a class="program-row reveal" href="#booking" data-book><span class="index">02</span><h3>Бокс для взрослых</h3><p>Стойка, перемещения, защита и удары. Можно начать с нуля и заниматься без цели выходить на соревнования.</p><span class="round-link">↗</span></a>
-          <a class="program-row reveal" href="#booking" data-book><span class="index">03</span><h3>Персональная работа</h3><p>Индивидуальный темп, максимальное внимание к деталям и программа под конкретную задачу.</p><span class="round-link">↗</span></a>
-          <a class="program-row reveal" href="#booking" data-book><span class="index">04</span><h3>Подготовка к боям</h3><p>Тактика, специальная физическая работа, контролируемые спарринги и подготовка к выступлению.</p><span class="round-link">↗</span></a>
+          <a class="program-row reveal" href="#booking" data-book><span class="index">01</span><h3>Бокс для детей</h3><p>Координация, физическая база, дисциплина и знакомство с техникой без ненужного давления.</p><span class="round-link" aria-hidden="true"></span></a>
+          <a class="program-row reveal" href="#booking" data-book><span class="index">02</span><h3>Бокс для взрослых</h3><p>Стойка, перемещения, защита и удары. Можно начать с нуля и заниматься без цели выходить на соревнования.</p><span class="round-link" aria-hidden="true"></span></a>
+          <a class="program-row reveal" href="#booking" data-book><span class="index">03</span><h3>Персональная работа</h3><p>Индивидуальный темп, максимальное внимание к деталям и программа под конкретную задачу.</p><span class="round-link" aria-hidden="true"></span></a>
+          <a class="program-row reveal" href="#booking" data-book><span class="index">04</span><h3>Подготовка к боям</h3><p>Тактика, специальная физическая работа, контролируемые спарринги и подготовка к выступлению.</p><span class="round-link" aria-hidden="true"></span></a>
         </div>
       </div>
     </section>
@@ -102,33 +102,21 @@
 
     <section id="coach" class="coach-layout section-rule" aria-labelledby="coach-title">
       <div class="coach-photo reveal"><img src="https://images.pexels.com/photos/4574138/pexels-photo-4574138.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Спортсмен работает на лапах с тренером в боксерском зале"><div class="coach-stamp">Техника · дисциплина · прогресс</div></div>
-      <div class="coach-copy reveal"><p class="kicker">Тренер клуба</p><h2 id="coach-title">Роман <span>Роландович</span></h2><blockquote>«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».</blockquote><div class="coach-facts"><div><strong>Работа</strong><span>Дети, взрослые и спортсмены</span></div><div><strong>Формат</strong><span>Группы и персональные занятия</span></div><div><strong>Акцент</strong><span>Техника, координация и тактика</span></div><div><strong>Подход</strong><span>Спокойно, внимательно, по делу</span></div></div><button class="button button-primary button-arrow" type="button" data-book>Тренировка с тренером</button></div>
+      <div class="coach-copy reveal"><p class="kicker">Тренер клуба</p><h2 id="coach-title">Роман <span class="coach-name">Роландович</span></h2><blockquote>«Моя задача — не просто дать нагрузку, а объяснить, зачем выполняется каждое движение и как оно работает».</blockquote><div class="coach-facts"><div><strong>Работа</strong><span>Дети, взрослые и спортсмены</span></div><div><strong>Формат</strong><span>Группы и персональные занятия</span></div><div><strong>Акцент</strong><span>Техника, координация и тактика</span></div><div><strong>Подход</strong><span>Спокойно, внимательно, по делу</span></div></div><button class="button button-primary button-arrow" type="button" data-book>Тренировка с тренером</button></div>
     </section>
 
     <section class="section section-rule" id="media" aria-labelledby="media-title">
       <div class="container">
-        <p class="kicker">Бесплатная академия</p><h2 class="section-heading reveal" id="media-title">Разбираем бокс, а не показываем трюки</h2>
+        <p class="kicker">Бесплатная академия</p><h2 class="section-heading reveal" id="media-title">Не просто отрабатываем движения — учимся понимать бокс и применять его на практике.</h2>
         <div class="media-grid reveal">
-          <a class="media-feature" href="https://www.youtube.com/watch?v=OnK1vq9VSEw" target="_blank" rel="noopener"><img src="https://images.pexels.com/photos/6720433/pexels-photo-6720433.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Юный спортсмен занимается с тренером по боксу"><div class="media-overlay"><span class="play" aria-hidden="true">▶</span><small>18 000 просмотров · 04:39</small><h3>Как поставить нокаутирующий удар?</h3></div></a>
+          <a class="media-feature" href="https://www.youtube.com/watch?v=OnK1vq9VSEw" target="_blank" rel="noopener"><img src="https://images.pexels.com/photos/6720433/pexels-photo-6720433.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Юный спортсмен занимается с тренером по боксу"><div class="media-overlay"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6.5v11l9-5.5-9-5.5Z" fill="currentColor"/></svg></span><small>18 000 просмотров · 04:39</small><h3>Как поставить нокаутирующий удар?</h3></div></a>
           <div class="media-stack"><a class="media-card" href="https://www.youtube.com/watch?v=Ld2trkWJ9gE" target="_blank" rel="noopener"><span>01 / техника</span><h3>Как поставить жёсткий удар?</h3><small>11:46 · YouTube</small></a><a class="media-card" href="https://www.youtube.com/watch?v=qLHEVxqoW4U" target="_blank" rel="noopener"><span>02 / защита</span><h3>Защитные действия в боксе</h3><small>13:53 · YouTube</small></a></div>
         </div>
       </div>
     </section>
 
-    <section class="section section-light" id="schedule" aria-labelledby="schedule-title">
-      <div class="container">
-        <p class="kicker">Расписание</p><h2 class="section-heading smaller reveal" id="schedule-title">Выберите удобный ритм</h2>
-        <div class="schedule-wrap reveal"><div class="filters"><button class="active" data-filter="all">Все занятия</button><button data-filter="child">Дети</button><button data-filter="adult">Взрослые</button><button data-filter="personal">Персонально</button></div><div class="schedule">
-          <div class="schedule-row" data-type="child"><span class="schedule-time">Пн / Ср</span><div><strong>Детская группа</strong><span>Базовая техника и координация</span></div><span>Время уточняется</span><button class="button button-small" data-book>Узнать</button></div>
-          <div class="schedule-row" data-type="adult"><span class="schedule-time">Пн / Ср / Пт</span><div><strong>Взрослые · общий уровень</strong><span>Техника, работа на лапах и ОФП</span></div><span>Время уточняется</span><button class="button button-small" data-book>Узнать</button></div>
-          <div class="schedule-row" data-type="adult"><span class="schedule-time">Вт / Чт</span><div><strong>Начинающие</strong><span>Постановка базы с нуля</span></div><span>Время уточняется</span><button class="button button-small" data-book>Узнать</button></div>
-          <div class="schedule-row" data-type="personal"><span class="schedule-time">Ежедневно</span><div><strong>Персональная тренировка</strong><span>По предварительной записи</span></div><span class="status">Гибкое время</span><button class="button button-small" data-book>Записаться</button></div>
-        </div></div>
-      </div>
-    </section>
-
     <section class="section section-rule" aria-labelledby="price-title">
-      <div class="container"><p class="kicker">Форматы занятий</p><h2 class="section-heading smaller reveal" id="price-title">Платите за работу, а не за обещания</h2><div class="pricing-grid reveal">
+      <div class="container"><p class="kicker">Форматы занятий</p><h2 class="section-heading smaller reveal" id="price-title">Платите за результат, а не за обещания</h2><div class="pricing-grid reveal">
         <article class="price"><span class="price-label">Первый шаг</span><h3>Пробная тренировка</h3><strong>Знакомство</strong><p>Тренер определит уровень, проведёт вводное занятие и посоветует формат.</p><ul><li>Разбор цели</li><li>Знакомство с базой</li><li>Рекомендация группы</li></ul><button class="button" data-book>Оставить заявку</button></article>
         <article class="price featured"><span class="price-label">Регулярный формат</span><h3>Группа</h3><strong>8–12 занятий</strong><p>Планомерная работа над техникой и физической формой в группе своего уровня.</p><ul><li>Программа по уровню</li><li>Контроль техники</li><li>Командная атмосфера</li></ul><button class="button button-light" data-book>Уточнить стоимость</button></article>
         <article class="price"><span class="price-label">Максимум внимания</span><h3>Персонально</h3><strong>1 на 1</strong><p>Индивидуальный темп, гибкое расписание и работа над ошибками.</p><ul><li>Личный план</li><li>Гибкое время</li><li>Быстрая корректировка</li></ul><button class="button" data-book>Выбрать время</button></article>
@@ -149,7 +137,7 @@
     </div></div></section>
 
     <section id="contacts" class="contact-layout" aria-labelledby="contacts-title">
-      <div class="contact-copy"><div><p class="kicker">Контакты</p><h2 id="contacts-title">Ваш первый раунд начинается здесь</h2></div><div class="contact-data"><div><span>Адреса</span><strong>ул. Еляна, 68<br>пр. Будённовский, 80</strong></div><div><span>Телефон</span><a href="tel:+79896301313"><strong>+7 989 630-13-13</strong></a></div><div><span>Связь</span><a href="https://wa.me/79896301313" target="_blank" rel="noopener"><strong>WhatsApp</strong></a></div><div><span>Соцсети</span><div><a href="https://vk.ru/club241344464" target="_blank" rel="noopener"><strong>VK</strong></a> · <a href="https://t.me/Boxing_Club13" target="_blank" rel="noopener"><strong>Telegram</strong></a> · <a href="https://youtube.com/channel/UCLjxhNYik5Tg19xmQkG5iww?si=qwMjuH5Svb6TXXBG" target="_blank" rel="noopener"><strong>YouTube</strong></a> · <a href="https://www.instagram.com/coach_roman_rostov013?utm_source=qr" target="_blank" rel="noopener"><strong>Instagram</strong></a></div></div></div></div>
+      <div class="contact-copy"><div><p class="kicker">Контакты</p><h2 id="contacts-title">ВАШ ПУТЬ НАЧИНАЕТСЯ В «БОКСЕРСКОМ КЛУБЕ 13»</h2></div><div class="contact-data"><div><span>Адреса</span><strong id="addressLine">ул. Еляна, 68<br>пр. Будённовский, 80</strong></div><div><span>Телефон</span><a id="phoneLink" href="tel:+79860231313"><strong id="phoneText">+7(986)023-13-13</strong></a></div><div><span>Связь</span><a href="https://wa.me/79860231313" id="waLink" target="_blank" rel="noopener"><strong>WhatsApp</strong></a></div><div><span>Соцсети</span><div id="socialLinks"><a href="https://vk.ru/club241344464" target="_blank" rel="noopener"><strong>VK</strong></a> · <a href="https://t.me/Boxing_Club13" target="_blank" rel="noopener"><strong>Telegram</strong></a> · <a href="https://youtube.com/channel/UCLjxhNYik5Tg19xmQkG5iww?si=qwMjuH5Svb6TXXBG" target="_blank" rel="noopener"><strong>YouTube</strong></a> · <a href="https://www.instagram.com/coach_roman_rostov013?utm_source=qr" target="_blank" rel="noopener"><strong>Instagram</strong></a></div></div></div></div>
       <div class="contact-map" aria-label="Схема расположения клуба">
         <div class="map-tabs">
           <button class="map-tab active" data-target="elyana" type="button">ул. Еляна, 68</button>
@@ -167,18 +155,20 @@
     <section class="section final-cta"><div class="container reveal"><h2>Первый шаг — <span>прийти в зал</span></h2><button class="button button-primary button-arrow" type="button" data-book>Записаться на пробную</button></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a class="brand" href="#top"><span class="brand-sign"><span>13</span></span><span>Boxing club</span></a><p>Бокс для детей и взрослых. Техника, дисциплина и индивидуальное внимание.</p></div><div><strong>Клуб</strong><a href="#programs">Направления</a><a href="#coach">Тренер</a><a href="#schedule">Расписание</a></div><div><strong>Соцсети</strong><a href="https://vk.ru/club241344464" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/Boxing_Club13" target="_blank" rel="noopener">Telegram</a><a href="https://youtube.com/channel/UCLjxhNYik5Tg19xmQkG5iww?si=qwMjuH5Svb6TXXBG" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/coach_roman_rostov013?utm_source=qr" target="_blank" rel="noopener">Instagram</a></div><div><strong>Связь</strong><a href="tel:+79896301313">+7 989 630-13-13</a><a href="https://wa.me/79896301313">WhatsApp</a><a href="#contacts">ул. Еляна, 68 / Будённовский, 80</a></div></div><div class="footer-bottom"><span>© 2026 Боксерский клуб 13</span><span>Политика конфиденциальности · Обработка данных</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a class="brand" href="#top"><span class="brand-sign"><span>13</span></span><span id="footerBrandName">Боксерский клуб</span></a><p id="footerText">Бокс для детей и взрослых. Техника, дисциплина и индивидуальное внимание.</p></div><div><strong>Клуб</strong><a href="#programs">Направления</a><a href="#coach">Тренер</a></div><div><strong>Соцсети</strong><a href="https://vk.ru/club241344464" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/Boxing_Club13" target="_blank" rel="noopener">Telegram</a><a href="https://youtube.com/channel/UCLjxhNYik5Tg19xmQkG5iww?si=qwMjuH5Svb6TXXBG" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/coach_roman_rostov013?utm_source=qr" target="_blank" rel="noopener">Instagram</a></div><div><strong>Связь</strong><a href="tel:+79860231313" id="footerPhone">+7(986)023-13-13</a><a href="https://wa.me/79860231313" id="footerWa">WhatsApp</a><a href="#contacts" id="footerAddress">ул. Еляна, 68 / Будённовский, 80</a></div></div><div class="footer-bottom"><span>© 2026 Боксерский клуб 13</span><span>Политика конфиденциальности · Обработка данных</span></div></div></footer>
 
   <dialog class="booking-dialog" id="booking" aria-labelledby="booking-title">
     <div class="dialog-head"><strong id="booking-title">Запись на тренировку</strong><button class="dialog-close" type="button" aria-label="Закрыть">×</button></div><div class="dialog-progress"><span></span></div>
     <form class="dialog-body" id="booking-form">
-      <section class="form-step" data-step="1"><h3>Для кого тренировка?</h3><p>Это поможет подобрать группу и нагрузку.</p><div class="choice-grid"><button class="choice" type="button">Для меня</button><button class="choice" type="button">Для ребёнка</button><button class="choice" type="button">Для подростка</button></div><div class="dialog-actions"><span></span><button class="button button-primary next-step" type="button" disabled>Продолжить →</button></div></section>
-      <section class="form-step" data-step="2" hidden><h3>Какая цель?</h3><p>Выберите наиболее близкий вариант.</p><div class="choice-grid"><button class="choice" type="button">Начать с нуля</button><button class="choice" type="button">Улучшить форму</button><button class="choice" type="button">Персональные занятия</button><button class="choice" type="button">Подготовка к соревнованиям</button><button class="choice" type="button">Пока не знаю</button></div><div class="dialog-actions"><button class="button prev-step" type="button">← Назад</button><button class="button button-primary next-step" type="button" disabled>Продолжить →</button></div></section>
-      <section class="form-step" data-step="3" hidden><h3>Как с вами связаться?</h3><p>Администратор уточнит время и ответит на вопросы.</p><label class="field">Имя<input name="name" autocomplete="name" required placeholder="Как к вам обращаться"></label><label class="field">Телефон<input name="phone" type="tel" autocomplete="tel" required placeholder="+7 999 000-00-00"></label><label class="field">Комментарий<textarea name="comment" placeholder="Например: удобно после 18:00"></textarea></label><p class="consent">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p><div class="dialog-actions"><button class="button prev-step" type="button">← Назад</button><button class="button button-primary" type="submit">Отправить заявку</button></div></section>
+      <section class="form-step" data-step="1"><h3>Для кого тренировка?</h3><p>Это поможет подобрать группу и нагрузку.</p><div class="choice-grid"><button class="choice" type="button">Для меня</button><button class="choice" type="button">Для ребёнка</button><button class="choice" type="button">Для подростка</button></div><div class="dialog-actions"><span></span><button class="button button-primary next-step" type="button" disabled>Продолжить</button></div></section>
+      <section class="form-step" data-step="2" hidden><h3>Какая цель?</h3><p>Выберите наиболее близкий вариант.</p><div class="choice-grid"><button class="choice" type="button">Начать с нуля</button><button class="choice" type="button">Улучшить форму</button><button class="choice" type="button">Персональные занятия</button><button class="choice" type="button">Подготовка к соревнованиям</button><button class="choice" type="button">Пока не знаю</button></div><div class="dialog-actions"><button class="button prev-step" type="button">Назад</button><button class="button button-primary next-step" type="button" disabled>Продолжить</button></div></section>
+      <section class="form-step" data-step="3" hidden><h3>Как с вами связаться?</h3><p>Администратор уточнит время и ответит на вопросы.</p><label class="field">Имя<input name="name" autocomplete="name" required placeholder="Как к вам обращаться"></label><label class="field">Телефон<input name="phone" type="tel" autocomplete="tel" required placeholder="+7 999 000-00-00"></label><label class="field">Комментарий<textarea name="comment" placeholder="Например: удобно после 18:00"></textarea></label><p class="consent">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p><div class="dialog-actions"><button class="button prev-step" type="button">Назад</button><button class="button button-primary" type="submit">Отправить заявку</button></div></section>
       <section class="form-step success" data-step="4" hidden><div class="success-mark">13</div><h3>Заявка принята</h3><p>В демонстрационной версии данные не отправляются. На рабочем сайте здесь будет подтверждение связи с администратором.</p><button class="button button-primary dialog-done" type="button">Готово</button></section>
     </form>
   </dialog>
 
-  <script src="app.js?v=20260917-2"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="app.js?v=20260919-2"></script>
 </body>
 </html>
