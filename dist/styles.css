@@ -157,3 +157,6 @@
   .program-row:hover { padding-inline: 0; background: transparent; }
   .program-row:hover .round-link { background: rgba(255,255,255,.02); border-color: rgba(241,238,231,.2); color: currentColor; }
 }
+
+.stat-icon { border-color: rgba(225,40,45,.42); background: rgba(225,40,45,.06); box-shadow: none; }
+.stat-icon svg { width: 20px; height: 20px; stroke-linecap: round; stroke-linejoin: round; }
